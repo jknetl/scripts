@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# eclipse-ws
+# ==========
+# Simple script for linking eclipse workspace settings to another directory.
+#
+# usage: eclipse-ws [/path/to/shared/settings] [/path/to/workspace]
+# shared settings folder must exists
+
+function print_usage {
+    echo  "usage: eclipse-ws [/path/to/shared/workspace/settings] [/path/to/workspace]"
+}
+
+# prints to stderr
+function echoerr() {
+    echo "$@" 1>&2;
+}
+
+if [ ! $# -eq 2 ] ; then
+    print_usage
+    exit 1
+fi
+
+if [ ! -d $1 ] ; then
+    echoerr "folder with shared settings does not exists"
+    exit 1
+fi
+
+if [ ! -d $2 ] ; then
+    mkdir -p $2
+fi
+
+# convert path to absolute
+shared_settings=$( cd $1 ; pwd)
+
+#convert path to absolute
+workspace=$(cd $2 ; pwd)
+
+
+ws_settings="$workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings"
+
+if [ ! -d $ws_settings ] ; then
+    mkdir -p $ws_settings
+fi
+
+ln -S $shared_settings $ws_settings
