@@ -37,10 +37,10 @@ shared_settings=$( cd $1 ; pwd)
 workspace=$(cd $2 ; pwd)
 
 
-ws_settings="$workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings"
+ws_settings="$workspace/.metadata/.plugins/org.eclipse.core.runtime"
 
 if [ ! -d $ws_settings ] ; then
     mkdir -p $ws_settings
 fi
 
-ln -S $shared_settings $ws_settings
+ln -s $shared_settings $ws_settings/.settings
