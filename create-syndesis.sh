@@ -4,6 +4,7 @@
 
 template=${template:-syndesis-restricted}
 ROUTE_HOSTNAME=${hostname:-syndesis.$(minishift ip).xip.io}
+KEYCLOAK_ROUTE_HOSTNAME=${keycloak_hostname:-syndesis-keycloak.$(minishift ip).xip.io}
 
 echo "Openshift started."
 echo "Please configure your GitHub registered application with following URL: https://syndesis.$(minishift ip).xip.io"
@@ -31,7 +32,10 @@ oc create -f https://raw.githubusercontent.com/syndesisio/syndesis-openshift-tem
 
 # create syndesis application
 oc new-app ${template} \
-    -p ROUTE_HOSTNAME=syndesis.$(minishift ip).xip.io \
+    -p KEYCLOAK_ROUTE_HOSTNAME=$KEYCLOAK_ROUTE_HOSTNAME \
+    -p ROUTE_HOSTNAME=$ROUTE_HOSTNAME \
+    -p ACCESS_TOKEN_LIFESPAN=60000 \
+    -p SESSION_LIFESPAN=60000 \
     -p OPENSHIFT_MASTER=$(oc whoami --show-server) \
     -p OPENSHIFT_PROJECT=$(oc project -q) \
     -p OPENSHIFT_OAUTH_CLIENT_SECRET=$(oc sa get-token syndesis-oauth-client) \
