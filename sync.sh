@@ -28,8 +28,12 @@ fi
 echo "Running in dry run:"
 
 RSYNC_OPTS="-av"
-rsync $RSYNC_OPTS -n "$source_dir" "$dest_dir"
+# grep skips directories in output
+rsync $RSYNC_OPTS -n "$source_dir" "$dest_dir" | grep -v '/$'
 
+echo ""
+echo "INFO: Running without --delete option. No files will be removed."
+echo ""
 
 read -p "Would you like to proceed? [y/n]: " input
 
