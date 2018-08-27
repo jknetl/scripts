@@ -7,6 +7,7 @@
 source_dir=${1}
 dest_dir=${2}
 
+
 if [ -z "$source_dir" ]; then
     print_usage
 fi
@@ -27,7 +28,9 @@ fi
 
 echo "Running in dry run:"
 
-RSYNC_OPTS="-av"
+# RSYNC_EXTRA_PARAMS allows to hook up special params when calling sync.sh from different scripts
+
+RSYNC_OPTS="${RSYNC_EXTRA_PARAMS} -av"
 # grep skips directories in output
 rsync $RSYNC_OPTS -n "$source_dir" "$dest_dir" | grep -v '/$'
 
