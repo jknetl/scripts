@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# tea
+# =====
+# Reminds you to finish a tea.
+# usage: tea N
+#   where N is number of minutes to wait before reminder
+
+echo "waiting $1 minute(s)..."
+sleep "$((60*$1))"
+message="Your tea is ready. $1 minute(s) elapsed"
+notify-send "$message"
+zenity --info --text="$message"
+
