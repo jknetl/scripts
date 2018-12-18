@@ -34,24 +34,41 @@ if [ -z "$SD_CARD_ROOT" ]; then
     exit 2
 fi
 
+# count number of files (excluding hidden files) in directory
+function count_files {
+    # We subtract 1 because ls -l shows total and number of inodes on the first line
+    #echo $(($(ls -l $1 | wc -l)-1))
+    #echo $(ls -1q $1 | wc -l)
+    echo $(find $1 -maxdepth 1 -type f ! -name ".*" | wc -l)
+}
+
+# counts number of files with a given extension (excluding hidden files)
+function count_files_ext {
+    echo $(find $1 -maxdepth 1 -type f -iname "*.$2" ! -name ".*" | wc -l)
+}
+
 PHOTOS_SOURCE="$SD_CARD_ROOT/DCIM/100MSDCF/"
 VIDEOS_SOURCE_STREAM="$SD_CARD_ROOT/PRIVATE/AVCHD/BDMV/STREAM/"
 VIDEOS_SOURCE_CLIP="$SD_CARD_ROOT/PRIVATE/M4ROOT/CLIP/"
+
+video_stream_files=$(count_files_ext $VIDEOS_SOURCE_STREAM mts)
+video_clip_files=$(count_files_ext $VIDEOS_SOURCE_CLIP mp4)
 
 mkdir -p $JPG_DIR
 mkdir -p $RAW_DIR
 mkdir -p $VIDEO_DIR
 
-echo "Importing $(ls -l $PHOTOS_SOURCE/*.JPG | wc -l)  JPGs..."
+echo "Importing $(count_files_ext $PHOTOS_SOURCE jpg)  JPGs..."
 cp $PHOTOS_SOURCE/*.JPG $JPG_DIR
-echo "Importing $(ls -l $PHOTOS_SOURCE/*.ARW | wc -l)  RAWs..."
+echo "Importing $(count_files_ext $PHOTOS_SOURCE arw)  RAWs..."
 cp $PHOTOS_SOURCE/*.ARW $RAW_DIR
-echo "Importing $(ls -l $VIDEOS_SOURCE/* | wc -l) videos..."
-if [[ -d $VIDEOS_SOURCE_STREAM ]]; then
+
+echo "Importing $(($video_stream_files + $video_clip_files)) videos..."
+if [[ -d $VIDEOS_SOURCE_STREAM && $video_stream_files -ge 1 ]]; then
     cp $VIDEOS_SOURCE_STREAM/* $VIDEO_DIR
 fi
 
-if [[ -d $VIDEOS_SOURCE_CLIP ]]; then
+if [[ -d $VIDEOS_SOURCE_CLIP  && $video_clip_files -ge 1 ]]; then
     cp $VIDEOS_SOURCE_CLIP/* $VIDEO_DIR
 fi
 
