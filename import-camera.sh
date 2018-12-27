@@ -47,7 +47,12 @@ function count_files_ext {
     echo $(find $1 -maxdepth 1 -type f -iname "*.$2" ! -name ".*" | wc -l)
 }
 
-PHOTOS_SOURCE="$SD_CARD_ROOT/DCIM/100MSDCF/"
+# finds first MSDCF dir in SD_CARD_ROOT (sd card root is argument)
+function find_msdcf_dir {
+   echo $(find $1/DCIM/ -type d -name "*MSDCF")
+}
+
+PHOTOS_SOURCE=$(find_msdcf_dir $SD_CARD_ROOT)
 VIDEOS_SOURCE_STREAM="$SD_CARD_ROOT/PRIVATE/AVCHD/BDMV/STREAM/"
 VIDEOS_SOURCE_CLIP="$SD_CARD_ROOT/PRIVATE/M4ROOT/CLIP/"
 
