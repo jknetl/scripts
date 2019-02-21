@@ -7,7 +7,16 @@
 # WARNING: it renames all pictures in the folder!
 
 
-FPS=20
+answer="nothing"
+while answer [[ $answer != "y" || $answer != "n" ]]; do
+  read -p "WARNING. This script renames all pictures in the folder. Do you want to continue? [y/n]: " answer
+  if [[ answer == "n" ]]; then
+    exit 0
+  fi
+done
+
+
+FPS=24
 OUTFILE=output-final.avi
 
 jhead -n%Y%m%d-%H%M%S *.JPG
