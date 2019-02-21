@@ -9,7 +9,7 @@
 SRCDIR=$1
 DESTDIR=thumbnails
 
-RESOLUTION=1920x1080
+RESOLUTION=2400x1200
 
 function print_usage() {
     echo "usage: $0 DIRECTORY"
