@@ -4,15 +4,15 @@
 # =========
 # Creates thumbnails.sh recursively
 #
-# usage: thumbnails.sh DIRECTORY
+# usage: thumbnails.sh DIRECTORY [2400x1200]
 
 SRCDIR=$1
 DESTDIR=thumbnails
 
-RESOLUTION=2400x1200
+RESOLUTION=${2:-2400x1200}
 
 function print_usage() {
-    echo "usage: $0 DIRECTORY"
+    echo "usage: $0 DIRECTORY [2400x1200]"
 }
 
 # Creates a thumbnail from a jpg file
