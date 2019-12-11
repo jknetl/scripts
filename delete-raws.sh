@@ -31,20 +31,20 @@ FILES_TO_REMOVE=""
 for f in $RAW_DIR/* ; do
     RAW_NAME=$(basename $f)
     FILENAME="${RAW_NAME%.*}"
-    if [ ! -f $JPG_DIR/$FILENAME.JPG ]; then
+    if [ ! \( -f $JPG_DIR/$FILENAME.JPG -o -f $JPG_DIR/$FILENAME.jpg \) ]; then
         FILES_TO_REMOVE="$FILES_TO_REMOVE $f"
     fi
 done
 
 
-if [ -z $FILES_TO_REMOVE ] ; then
+if [ -z "$FILES_TO_REMOVE" ] ; then
     echo "Nothing to remove."
     exit 0
 fi
 
 echo "Following files will be removed:"
 echo "$FILES_TO_REMOVE"
-echo "The script will remove $(echo "$FILES_TO_REMOVE" | wc -w)/$(ls -l $JPG_DIR | wc -l) RAW files. Do you want to continue?"
+echo "The script will remove $(echo "$FILES_TO_REMOVE" | wc -w)/$(ls -l $RAW_DIR | wc -l) RAW files. Do you want to continue?"
 
 answer=""
 
