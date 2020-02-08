@@ -7,13 +7,19 @@
 source_dir=${1}
 dest_dir=${2}
 
+function print_usage {
+  echo "usage: sync.sh SOURCE_DIR DESTINATION_DIR"
+}
+
 
 if [ -z "$source_dir" ]; then
     print_usage
+    exit 1
 fi
 
 if [ -z "$dest_dir" ]; then
     print_usage
+    exit 1
 fi
 
 if [ ! -d "$source_dir" ]; then
