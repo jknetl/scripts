@@ -20,7 +20,13 @@ OUTPUT_DIR="$1"
 JPG_DIR=$OUTPUT_DIR/jpg
 RAW_DIR=$OUTPUT_DIR/raw
 VIDEO_DIR=$OUTPUT_DIR/video
-MEDIA_DIR="/run/media/$USER/"
+
+if $(fgrep -i ubuntu /etc/os-release > /dev/null); then
+  MEDIA_DIR="/media/$USER/"
+else
+  MEDIA_DIR="/run/media/$USER/"
+fi
+
 SD_CARD_ROOT=""
 
 for f in $MEDIA_DIR/*; do
