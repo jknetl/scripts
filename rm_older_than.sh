@@ -13,7 +13,7 @@ fi
 DIR="$1"
 DAYS=${2:-30}
 
-find "$DIR" -atime +${DAYS} -print0 | xargs -0 /bin/rm -f
+find "$DIR" -type f,l -atime +${DAYS} -print0 | xargs -0 /bin/rm -f
 
 # delete empty directories:
 # if you delete all file from a directory it changes its access time and
